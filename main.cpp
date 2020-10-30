@@ -41,9 +41,9 @@
  * System Devices
  ******************************************************************************/
 static const constexpr stm32::PllCfg pllCfg = {
-    .m_pllSource        = stm32::PllCfg::PllSource_t::e_PllSourceHSI,
-    .m_hseSpeedInHz     = 0 * 1000 * 1000,
-    .m_hsePrescaler     = stm32::PllCfg::HSEPrescaler_t::e_HSEPrescaler_None,
+    .m_pllSource        = stm32::PllCfg::PllSource_t::e_PllSourceHSE,
+    .m_hseSpeedInHz     = 8 * 1000 * 1000,
+    .m_hsePrescaler     = stm32::PllCfg::HSEPrescaler_t::e_HSEPrescaler_Div2,
     .m_pllM             = stm32::PllCfg::PllMul_t::e_PllM_13,
     .m_sysclkSource     = stm32::PllCfg::SysclkSource_t::e_SysclkPLL,
     .m_ahbPrescaler     = stm32::PllCfg::AHBPrescaler_t::e_AHBPrescaler_None,
@@ -64,14 +64,14 @@ static stm32::Pwr                       pwr(rcc, scb);
 static stm32::Gpio::A                   gpio_A(rcc);
 static gpio::GpioEngine                 gpio_engine_A(&gpio_A);
 
-static stm32::Gpio::C                   gpio_C(rcc);
-static gpio::GpioEngine                 gpio_engine_C(&gpio_C);
+static stm32::Gpio::B                   gpio_B(rcc);
+static gpio::GpioEngine                 gpio_engine_B(&gpio_B);
 
 /*******************************************************************************
  * LEDs
  ******************************************************************************/
 static gpio::AlternateFnPin             g_mco1(gpio_engine_A, 8);
-static gpio::GpioPin                    g_led_green(gpio_engine_C, 13);
+static gpio::GpioPin                    g_led_green(gpio_engine_B, 12);
 
 /*******************************************************************************
  * UART
@@ -79,7 +79,7 @@ static gpio::GpioPin                    g_led_green(gpio_engine_C, 13);
 static gpio::AlternateFnPin             uart_tx(gpio_engine_A, 9);
 static gpio::AlternateFnPin             uart_rx(gpio_engine_A, 10);
 static stm32::Uart::Usart1<gpio::AlternateFnPin>    uart_access(rcc, uart_rx, uart_tx);
-uart::UartDevice                        g_uart(&uart_access);
+uart::UartDevice                         g_uart(&uart_access);
 
 /*******************************************************************************
  * DMA Engines
